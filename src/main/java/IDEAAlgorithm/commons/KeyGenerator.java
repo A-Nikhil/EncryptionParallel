@@ -1,10 +1,10 @@
-package IDEAEncryptionDecryption;
+package IDEAAlgorithm.commons;
 
 import java.util.ArrayList;
 
-class KeyGenerator {
+public class KeyGenerator {
 
-	Key generateKeySet(String originalKey, boolean isEncryption) {
+	public Key generateKeySet(String originalKey, boolean isEncryption) {
 
 		originalKey = rounder(originalKey);
 		String eightRounds = originalKey.substring(0, 768);

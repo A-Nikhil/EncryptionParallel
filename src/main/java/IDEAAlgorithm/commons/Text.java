@@ -1,12 +1,12 @@
-package IDEAEncryptionDecryption;
+package IDEAAlgorithm.commons;
 
 import java.util.ArrayList;
 
-class Text {
+public class Text {
 	private String text;
 	private ArrayList<String[]> textBlocks;
 
-	Text(String text, boolean isPlainText) {
+	public Text(String text, boolean isPlainText) {
 		this.text = text;
 		textBlocks = new ArrayList<>();
 		if (isPlainText) {
@@ -59,7 +59,7 @@ class Text {
 		}
 	}
 
-	ArrayList<String[]> getTextBlocks() {
+	public ArrayList<String[]> getTextBlocks() {
 		return textBlocks;
 	}
 }

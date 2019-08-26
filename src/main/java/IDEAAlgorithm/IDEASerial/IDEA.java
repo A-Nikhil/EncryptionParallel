@@ -1,11 +1,15 @@
-package IDEAEncryptionDecryption;
+package IDEAAlgorithm.IDEASerial;
+
+import IDEAAlgorithm.commons.Key;
+import IDEAAlgorithm.commons.KeyGenerator;
+import IDEAAlgorithm.commons.Text;
+import IDEAAlgorithm.commons.Utilities;
 
 import java.util.ArrayList;
 
 public class IDEA {
 
 	private final Utilities utils = new Utilities();
-	src\main\java\IDEAEncryptionDecryption
 
 	public static void main(String[] args) {
 		IDEA object = new IDEA();

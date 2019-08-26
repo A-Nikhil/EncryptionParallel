@@ -1,6 +1,6 @@
-package IDEAEncryptionDecryption;
+package IDEAAlgorithm.commons;
 
-class Utilities {
+public class Utilities {
 
 	String decimalToBinary8(int decimalNumber) {
 		String decimal = Integer.toBinaryString(decimalNumber);
@@ -14,7 +14,7 @@ class Utilities {
 		return decimal;
 	}
 
-	String decimalToBinary16(long decimalNumber) {
+	public String decimalToBinary16(long decimalNumber) {
 		String decimal = Long.toBinaryString(decimalNumber);
 		int l = decimal.length();
 		if (l < 16) {
@@ -25,7 +25,7 @@ class Utilities {
 		return decimal;
 	}
 
-	int binaryToDecimal16(String binaryString) {
+	public int binaryToDecimal16(String binaryString) {
 		int decimal = 0;
 		for (int i = 15; i >= 0; i--) {
 			decimal += ((int) (binaryString.charAt(15 - i)) - 48) * (int) Math.pow(2, i);
@@ -33,7 +33,7 @@ class Utilities {
 		return decimal;
 	}
 
-	int binaryToDecimal8(String binaryString) {
+	public int binaryToDecimal8(String binaryString) {
 		int decimal = 0;
 		for (int i = 7; i >= 0; i--) {
 			decimal += ((int) (binaryString.charAt(7 - i)) - 48) * (int) Math.pow(2, i);
