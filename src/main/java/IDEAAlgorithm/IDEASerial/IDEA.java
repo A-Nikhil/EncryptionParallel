@@ -23,7 +23,7 @@ public class IDEA {
 		// decrypt
 		millis = System.currentTimeMillis();
 		String returnString = object.doIDEADecryption(cipher);
-		System.out.println(object.getDecryptedString(returnString).trim());
+		System.out.println(returnString);
 		System.out.println(System.currentTimeMillis() - millis);
 	}
 
@@ -31,7 +31,7 @@ public class IDEA {
 		KeyGenerator generator = new KeyGenerator();
 		Key key = generator.generateKeySet(new Key().getOriginalKeyString(), true);
 		Text text = new Text(PlainText, true);
-		return performIDEASequence(key, text);
+		return utils.getDecryptedString(performIDEASequence(key, text).trim());
 	}
 
 	private String doIDEADecryption(String CipherText) {
@@ -65,46 +65,46 @@ public class IDEA {
 				currentKeySet = keySet.get(j - 1);
 
 				// step 1
-				result1 = idea.MultiplicationModulo(p1, currentKeySet[0]);
+				result1 = utils.MultiplicationModulo(p1, currentKeySet[0]);
 
 				// step 2
-				result2 = idea.AdditionModulo(p2, currentKeySet[1]);
+				result2 = utils.AdditionModulo(p2, currentKeySet[1]);
 
 				// step 3
-				result3 = idea.AdditionModulo(p3, currentKeySet[2]);
+				result3 = utils.AdditionModulo(p3, currentKeySet[2]);
 
 				// step 4
-				result4 = idea.MultiplicationModulo(p4, currentKeySet[3]);
+				result4 = utils.MultiplicationModulo(p4, currentKeySet[3]);
 
 				// step 5
-				result5 = idea.XOR(result1, result3);
+				result5 = utils.XOR(result1, result3);
 
 				// step 6
-				result6 = idea.XOR(result2, result4);
+				result6 = utils.XOR(result2, result4);
 
 				// step 7
-				result7 = idea.MultiplicationModulo(result5, currentKeySet[4]);
+				result7 = utils.MultiplicationModulo(result5, currentKeySet[4]);
 
 				// step 8
-				result8 = idea.AdditionModulo(result6, result7);
+				result8 = utils.AdditionModulo(result6, result7);
 
 				// step 9
-				result9 = idea.MultiplicationModulo(result8, currentKeySet[5]);
+				result9 = utils.MultiplicationModulo(result8, currentKeySet[5]);
 
 				// step 10
-				result10 = idea.AdditionModulo(result7, result9);
+				result10 = utils.AdditionModulo(result7, result9);
 
 				// step 11
-				result11 = idea.XOR(result1, result9);
+				result11 = utils.XOR(result1, result9);
 
 				// step 12
-				result12 = idea.XOR(result3, result9);
+				result12 = utils.XOR(result3, result9);
 
 				// step 13
-				result13 = idea.XOR(result2, result10);
+				result13 = utils.XOR(result2, result10);
 
 				// step 14
-				result14 = idea.XOR(result4, result10);
+				result14 = utils.XOR(result4, result10);
 
 				p1 = result11;
 				p2 = result13;
@@ -117,10 +117,10 @@ public class IDEA {
 
 			// half round
 			currentKeySet = keySet.get(8);
-			p1 = idea.MultiplicationModulo(p1, currentKeySet[0]);
-			p2 = idea.AdditionModulo(p2, currentKeySet[1]);
-			p3 = idea.AdditionModulo(p3, currentKeySet[2]);
-			p4 = idea.MultiplicationModulo(p4, currentKeySet[3]);
+			p1 = utils.MultiplicationModulo(p1, currentKeySet[0]);
+			p2 = utils.AdditionModulo(p2, currentKeySet[1]);
+			p3 = utils.AdditionModulo(p3, currentKeySet[2]);
+			p4 = utils.MultiplicationModulo(p4, currentKeySet[3]);
 
 //				System.out.println(p1 + " - " + p2 + " - " + p3 + " - " + p4);
 
@@ -129,39 +129,5 @@ public class IDEA {
 			cipherText = cipherText.concat(p1 + p2 + p3 + p4);
 		}
 		return cipherText;
-	}
-
-	private String MultiplicationModulo(String x, String y) {
-		long n1 = utils.binaryToDecimal16(x);
-		long n2 = utils.binaryToDecimal16(y);
-		return utils.decimalToBinary16(((n1 * n2) % 65537));
-
-	}
-
-	private String AdditionModulo(String x, String y) {
-		int n1 = utils.binaryToDecimal16(x);
-		int n2 = utils.binaryToDecimal16(y);
-		return utils.decimalToBinary16(((n1 + n2) % 65536));
-	}
-
-	private String XOR(String x, String y) {
-		String xor = "";
-		for (int i = 0; i < 16; i++) {
-			if (x.charAt(i) != y.charAt(i)) {
-				xor = xor.concat("1");
-			} else {
-				xor = xor.concat("0");
-			}
-		}
-		return xor;
-	}
-
-	private String getDecryptedString(String cipher) {
-		String x, temp = "";
-		for (int i = 0; i < cipher.length(); i += 8) {
-			x = cipher.substring(i, i + 8);
-			temp = temp.concat(Character.toString((char)utils.binaryToDecimal8(x)));
-		}
-		return temp;
 	}
 }
