@@ -9,7 +9,7 @@ public class Key {
 		keyList = new ArrayList<>();
 	}
 
-	Key(ArrayList<String[]> keyList) {
+	public Key(ArrayList<String[]> keyList) {
 		this.keyList = keyList;
 	}
 
