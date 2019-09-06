@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class KeyGenerator {
 
 	public Key generateKeySet(String originalKey, boolean isEncryption) {
-
 		originalKey = rounder(originalKey);
 		String eightRounds = originalKey.substring(0, 768);
 		String halfRound = originalKey.substring(768);
@@ -50,7 +49,7 @@ public class KeyGenerator {
 		return tempString;
 	}
 
-	private String circularLeftShiftBy25(String number) {
+	public String circularLeftShiftBy25(String number) {
 		String finalNumber = "";
 		for (int i = 0; i < 25; i++) {
 			finalNumber = finalNumber.concat(Character.toString(number.charAt(i)));
