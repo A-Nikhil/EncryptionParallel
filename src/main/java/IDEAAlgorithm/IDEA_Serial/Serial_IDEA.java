@@ -2,28 +2,29 @@ package IDEAAlgorithm.IDEA_Serial;
 
 import IDEAAlgorithm.commons.IDEASequence;
 import IDEAAlgorithm.commons.Key;
-import IDEAAlgorithm.commons.KeyGenerator;
-import IDEAAlgorithm.commons.Text;
 import IDEAAlgorithm.commons.Utilities;
 
 public class Serial_IDEA {
 
 	private final Utilities utils = new Utilities();
 
+	@SuppressWarnings("Duplicates")
 	public static void main(String[] args) {
 		Serial_IDEA object = new Serial_IDEA();
 		String text = "Hello World";
 		System.out.println("Starting Encryption Process with Plain Text = " + text);
-		long millis = System.currentTimeMillis();
+		long init = System.currentTimeMillis();
 		String cipher = object.doIDEAEncryption(text);
 		System.out.println(cipher);
+		long encrypt = System.currentTimeMillis();
 		System.out.println();
-		System.out.println(System.currentTimeMillis() - millis);
-//		// decrypt
-//		millis = System.currentTimeMillis();
+		// decrypt
 		String returnString = object.doIDEADecryption(cipher);
+		long decrypt = System.currentTimeMillis();
 		System.out.println(returnString);
-//		System.out.println(System.currentTimeMillis() - millis);
+		System.out.println("Time Taken to encrypt = " + (encrypt - init) + " ms");
+		System.out.println("Time Taken to decrypt = " + (decrypt - encrypt) + " ms");
+		System.out.println("           Total Time = " + (decrypt - init) + " ms");
 	}
 
 	private String doIDEAEncryption(String PlainText) {

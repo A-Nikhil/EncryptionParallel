@@ -9,13 +9,13 @@ public class Parallel_IDEA_Task implements Callable<String> {
 
 	private String[] topArray;
 	private String[] bottomArray;
-	private ArrayList<String[]> keySet;
+	private static ArrayList<String[]> keySet;
 	private Utilities utilities;
 
 	Parallel_IDEA_Task(String[] topArray, String[] bottomArray, ArrayList<String[]> keySet, Utilities utilities) {
 		this.topArray = topArray;
 		this.bottomArray = bottomArray;
-		this.keySet = keySet;
+		Parallel_IDEA_Task.keySet = keySet;
 		this.utilities = utilities;
 	}
 
@@ -26,6 +26,6 @@ public class Parallel_IDEA_Task implements Callable<String> {
 		p2 = topArray[2] + topArray[3];
 		p3 = bottomArray[0] + bottomArray[1];
 		p4 = bottomArray[2] + bottomArray[3];
-		return utilities.doIDEASequenceLoop(p1, p2, p3, p4, utilities, keySet);
+		return utilities.doIDEASequenceLoop(p1, p2, p3, p4, utilities, Parallel_IDEA_Task.keySet);
 	}
 }

@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 class KeyMaker {
+	static int numberOfCores;
 	Key makeKey(Key key) {
 		try {
-			int numberOfCores = Runtime.getRuntime().availableProcessors(); // returns 8
 			ExecutorService service = Executors.newFixedThreadPool(numberOfCores);
 			String keyString = key.getOriginalKeyString();
 			HashMap<Integer, Future<String>> taskMap = new HashMap<>();
@@ -42,5 +42,30 @@ class KeyMaker {
 			e.printStackTrace();
 		}
 		return key;
+	}
+
+	Key invertKey(ArrayList<String[]> myList) {
+		try {
+			for (int i = 0; i < 9; i++) {
+				System.arraycopy(myList.get(i), 0, KeyInverterTask.store[i], 0, myList.get(i).length);
+			}
+
+			ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+			HashMap<Integer, Future<String[]>> taskMap = new HashMap<>();
+			for (int i = 0; i < 9; i++) {
+				taskMap.put(i, service.submit(new KeyInverterTask(i)));
+			}
+
+			ArrayList<String[]> newList = new ArrayList<>();
+			for (int i = 0; i < 9; i++) {
+				newList.add(taskMap.get(i).get());
+			}
+			service.shutdown();
+			return new Key(newList);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

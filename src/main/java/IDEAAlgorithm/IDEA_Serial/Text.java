@@ -1,4 +1,6 @@
-package IDEAAlgorithm.commons;
+package IDEAAlgorithm.IDEA_Serial;
+
+import IDEAAlgorithm.commons.Utilities;
 
 import java.util.ArrayList;
 
@@ -6,7 +8,7 @@ public class Text {
 	private String text;
 	private ArrayList<String[]> textBlocks;
 
-	public Text(String text, boolean isPlainText) {
+	Text(String text, boolean isPlainText) {
 		this.text = text;
 		textBlocks = new ArrayList<>();
 		if (isPlainText) {

@@ -1,10 +1,13 @@
-package IDEAAlgorithm.commons;
+package IDEAAlgorithm.IDEA_Serial;
+
+import IDEAAlgorithm.commons.Key;
+import IDEAAlgorithm.commons.Utilities;
 
 import java.util.ArrayList;
 
-public class KeyGenerator {
+class KeyGenerator {
 
-	public Key generateKeySet(String originalKey, boolean isEncryption) {
+	Key generateKeySet(String originalKey, boolean isEncryption) {
 		originalKey = rounder(originalKey);
 		String eightRounds = originalKey.substring(0, 768);
 		String halfRound = originalKey.substring(768);
@@ -49,7 +52,7 @@ public class KeyGenerator {
 		return tempString;
 	}
 
-	public String circularLeftShiftBy25(String number) {
+	private String circularLeftShiftBy25(String number) {
 		String finalNumber = "";
 		for (int i = 0; i < 25; i++) {
 			finalNumber = finalNumber.concat(Character.toString(number.charAt(i)));
@@ -57,6 +60,8 @@ public class KeyGenerator {
 		finalNumber = number.substring(25).concat(finalNumber);
 		return finalNumber;
 	}
+
+	private final Utilities utilities = new Utilities();
 
 	private ArrayList<String[]> performKeyReversal(ArrayList<String[]> myList) {
 		ArrayList<String[]> newList = new ArrayList<>();
@@ -69,10 +74,10 @@ public class KeyGenerator {
 			if (i != 8) {
 				newList.add(
 						new String[]{
-								findInverse(store[8 - i][0]),
-								findNegative(store[8 - i][1]),
-								findNegative(store[8 - i][2]),
-								findInverse(store[8 - i][3]),
+								utilities.findInverse(store[8 - i][0]),
+								utilities.findNegative(store[8 - i][1]),
+								utilities.findNegative(store[8 - i][2]),
+								utilities.findInverse(store[8 - i][3]),
 								store[8 - i - 1][4],
 								store[8 - i - 1][5]
 						}
@@ -80,34 +85,15 @@ public class KeyGenerator {
 			} else {
 				newList.add(
 						new String[]{
-								findInverse(store[8 - i][0]),
-								findNegative(store[8 - i][1]),
-								findNegative(store[8 - i][2]),
-								findInverse(store[8 - i][3]),
+								utilities.findInverse(store[8 - i][0]),
+								utilities.findNegative(store[8 - i][1]),
+								utilities.findNegative(store[8 - i][2]),
+								utilities.findInverse(store[8 - i][3]),
 						}
 				);
 			}
 		}
 
 		return newList;
-	}
-
-	private final Utilities utilities = new Utilities();
-
-	private String findInverse(String x) {
-		long decimal = utilities.binaryToDecimal16(x);
-		decimal = decimal % 65537;
-		for (int i = 1; i < 65537; i++) {
-			if ((decimal * i) % 65537 == 1) {
-				return utilities.decimalToBinary16(i);
-			}
-		}
-		return utilities.decimalToBinary16(1L);
-	}
-
-	private String findNegative(String str1) {
-		long x = utilities.binaryToDecimal16(str1);
-		String temp = Long.toBinaryString(-x);
-		return temp.substring(temp.length() - 16);
 	}
 }

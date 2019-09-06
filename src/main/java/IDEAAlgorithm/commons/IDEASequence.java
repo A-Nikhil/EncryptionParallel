@@ -1,5 +1,7 @@
 package IDEAAlgorithm.commons;
 
+import IDEAAlgorithm.IDEA_Serial.Text;
+
 import java.util.ArrayList;
 
 public class IDEASequence {
