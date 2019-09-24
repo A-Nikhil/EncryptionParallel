@@ -1,6 +1,3 @@
-// TODO: 04-09-2019 Decryption Key generation
-// TODO: 04-09-2019 Decryption process
-
 package IDEAAlgorithm.IDEA_Parallel;
 
 import IDEAAlgorithm.commons.Key;
@@ -21,28 +18,30 @@ public class Parallel_IDEA {
 
 	@SuppressWarnings("Duplicates")
 	public static void main(String[] args) {
-		Parallel_IDEA object = new Parallel_IDEA();
-		KeyMaker.numberOfCores = object.numberOfCores;
-		String plainText = "Hello World";
-		long init = System.currentTimeMillis();
-		String cipher = object.doEncryptionParallel(plainText);
-		System.out.println(cipher);
-		long encrypt = System.currentTimeMillis();
-		String plain = object.doDecryptionParallel(cipher).trim();
-		long decrypt = System.currentTimeMillis();
-		System.out.println(plain);
-		System.out.println("Time Taken to encrypt = " + (encrypt - init) + " ms");
-		System.out.println("Time Taken to decrypt = " + (decrypt - encrypt) + " ms");
-		System.out.println("           Total Time = " + (decrypt - init) + " ms");
-		if (plain.equals(plainText)) {
-			System.out.println("Successful Encryption and Decryption");
-			System.exit(0);
-		}
+		String str = NULL;
+		System.out.println(str != NULL);
+//		Parallel_IDEA object = new Parallel_IDEA();
+//		String plainText = "Hello World";
+//		long init = System.currentTimeMillis();
+//		String cipher = object.doEncryptionParallel(plainText);
+//		System.out.println(cipher);
+//		long encrypt = System.currentTimeMillis();
+//		String plain = object.doDecryptionParallel(cipher).trim();
+//		long decrypt = System.currentTimeMillis();
+//		System.out.println(plain);
+//		System.out.println("Time Taken to encrypt = " + (encrypt - init) + " ms");
+//		System.out.println("Time Taken to decrypt = " + (decrypt - encrypt) + " ms");
+//		System.out.println("           Total Time = " + (decrypt - init) + " ms");
+//		if (plain.equals(plainText)) {
+//			System.out.println("Successful Encryption and Decryption");
+//			System.exit(0);
+//		}
 	}
 
-	private String doEncryptionParallel(String plainText) {
+	public String[] doEncryptionParallel(String plainText) {
 		try {
 			// form key
+			long init = System.currentTimeMillis();
 			ExecutorService service = Executors.newFixedThreadPool(numberOfCores);
 			key = new KeyMaker().makeKey(key);
 			int length = plainText.length() % 8;
@@ -58,9 +57,9 @@ public class Parallel_IDEA {
 					PlainTextMap.put((j + i), service.submit(new TextParallel(plainText.charAt(i + j), utils)));
 				}
 			}
+			long time = System.currentTimeMillis() - init;
 			ArrayList<String[]> textBlocks = new ArrayList<>();
 			for (i = 0; i < plainText.length(); i += 4) {
-
 				textBlocks.add(
 						new String[]{
 								PlainTextMap.get(i).get(),
@@ -74,6 +73,7 @@ public class Parallel_IDEA {
 			service.shutdown();
 			PlainTextMap.clear(); // for garbage collection
 			System.gc();
+			long checkPoint1 = System.currentTimeMillis();
 			service = Executors.newFixedThreadPool(numberOfCores);
 			ArrayList<String[]> keySet = key.getKeyList(); // getting keys
 			HashMap<Integer, Future<String>> CipherTextMap = new HashMap<>();
@@ -89,20 +89,25 @@ public class Parallel_IDEA {
 			for (i = 0; i < textBlocks.size(); i += 2) {
 				cipher = cipher.concat(CipherTextMap.get(i).get());
 			}
-			return cipher;
+			time += System.currentTimeMillis() - checkPoint1;
+			return new String[]{
+					cipher,
+					Long.toString(time)
+			};
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return new String[]{};
 	}
 
-	private String doDecryptionParallel(String cipherText) {
+	public String[] doDecryptionParallel(String cipherText) {
 		try {
 			ExecutorService service = Executors.newFixedThreadPool(numberOfCores);
-			key = new KeyMaker().invertKey(key.getKeyList());
 			String str;
 			String[] topArray, bottomArray;
 			HashMap<Integer, Future<String>> TextMap = new HashMap<>();
+			long init = System.currentTimeMillis();
+			key = new KeyMaker().invertKey(key.getKeyList());
 			for (int i = 0; i < cipherText.length(); i += 64) {
 				str = cipherText.substring(i, i + 64);
 				topArray = new String[]{
@@ -128,11 +133,15 @@ public class Parallel_IDEA {
 			for (int i = 0; i < cipherText.length(); i += 64) {
 				str = str.concat(TextMap.get(i).get());
 			}
+			long time = System.currentTimeMillis() - init;
 			service.shutdown();
-			return utils.getDecryptedString(str);
+			return new String[]{
+					utils.getDecryptedString(str),
+					Long.toString(time)
+			};
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return new String[]{};
 	}
 }

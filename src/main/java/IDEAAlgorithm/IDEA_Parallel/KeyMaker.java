@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 class KeyMaker {
-	static int numberOfCores;
+	int numberOfCores = 8;
 	Key makeKey(Key key) {
 		try {
 			ExecutorService service = Executors.newFixedThreadPool(numberOfCores);
