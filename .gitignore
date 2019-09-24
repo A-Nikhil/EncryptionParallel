@@ -2,3 +2,7 @@
 ideaAlgo.iml
 src/test/
 target/
+.classpath
+.project
+.settings/
+TestCases/
