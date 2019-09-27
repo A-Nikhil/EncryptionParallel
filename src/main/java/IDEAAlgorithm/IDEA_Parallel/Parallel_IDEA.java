@@ -18,8 +18,6 @@ public class Parallel_IDEA {
 
 	@SuppressWarnings("Duplicates")
 	public static void main(String[] args) {
-		String str = NULL;
-		System.out.println(str != NULL);
 //		Parallel_IDEA object = new Parallel_IDEA();
 //		String plainText = "Hello World";
 //		long init = System.currentTimeMillis();
