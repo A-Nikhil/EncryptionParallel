@@ -1,3 +1,8 @@
+/*
+main() is for testing purposes only.
+The main execution will be carried out as API calls
+ */
+
 package IDEAAlgorithm.IDEA_Serial;
 
 import IDEAAlgorithm.commons.IDEASequence;
@@ -8,24 +13,31 @@ public class Serial_IDEA {
 
 	private final Utilities utils = new Utilities();
 
-//	@SuppressWarnings("Duplicates")
 	public static void main(String[] args) {
 		Serial_IDEA object = new Serial_IDEA();
-		String text = "Hello World";
-		// decrypt
+		String text = "Hello World"; // sample text
+
 		System.out.println("Starting Encryption Process with Plain Text = " + text);
-		long init = System.currentTimeMillis();
-//		String cipher = object.doIDEAEncryption(text);
-		long encrypt = System.currentTimeMillis();
-//		System.out.println(cipher);
-//		String returnString = object.doIDEADecryption(cipher);
-		long decrypt = System.currentTimeMillis();
-//		System.out.println(returnString);
-		System.out.println();
-		// execution information
-		System.out.println("Time Taken to encrypt = " + (encrypt - init) + " ms");
-		System.out.println("Time Taken to decrypt = " + (decrypt - encrypt) + " ms");
-		System.out.println("           Total Time = " + (decrypt - init) + " ms");
+
+		/*
+		* Array containing the cipher text and time taken
+		* [0] => cipher text
+		* [1] => Time taken
+		 */
+		String[] returnedCipher  = object.doIDEAEncryption(text);
+		String cipher = returnedCipher[0];
+		long encrypt = Long.parseLong(returnedCipher[1]);
+		System.out.printf("Cipher text : %s\n Time taken to encrypt %d\n", cipher, encrypt);
+
+		/*
+		 * Array containing the plain text and time taken
+		 * [0] => plain text
+		 * [1] => Time taken
+		 */
+		String[] returnedPlain = object.doIDEADecryption(cipher);
+		String pt = returnedPlain[0];
+		long decrypt = Long.parseLong(returnedPlain[1]);
+		System.out.printf("Decrypted text : %s\n Time taken to decrypt %d\n", pt, decrypt);
 	}
 
 	public String[] doIDEAEncryption(String PlainText) {

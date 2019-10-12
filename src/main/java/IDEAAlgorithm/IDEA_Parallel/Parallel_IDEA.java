@@ -1,3 +1,8 @@
+/*
+main() is for testing purposes only.
+The main execution will be carried out as API calls
+ */
+
 package IDEAAlgorithm.IDEA_Parallel;
 
 import IDEAAlgorithm.commons.Key;
@@ -16,24 +21,34 @@ public class Parallel_IDEA {
 	private final int numberOfCores = Runtime.getRuntime().availableProcessors();
 	private Key key = new Key();
 
-	@SuppressWarnings("Duplicates")
 	public static void main(String[] args) {
-//		Parallel_IDEA object = new Parallel_IDEA();
-//		String plainText = "Hello World";
-//		long init = System.currentTimeMillis();
-//		String cipher = object.doEncryptionParallel(plainText);
-//		System.out.println(cipher);
-//		long encrypt = System.currentTimeMillis();
-//		String plain = object.doDecryptionParallel(cipher).trim();
-//		long decrypt = System.currentTimeMillis();
-//		System.out.println(plain);
-//		System.out.println("Time Taken to encrypt = " + (encrypt - init) + " ms");
-//		System.out.println("Time Taken to decrypt = " + (decrypt - encrypt) + " ms");
-//		System.out.println("           Total Time = " + (decrypt - init) + " ms");
-//		if (plain.equals(plainText)) {
-//			System.out.println("Successful Encryption and Decryption");
-//			System.exit(0);
-//		}
+		Parallel_IDEA object = new Parallel_IDEA();
+		String plainText = "Hello World";
+
+		/*
+		 * Array containing the cipher text and time taken
+		 * [0] => cipher text
+		 * [1] => Time taken
+		 */
+		String[] returnedCipher = object.doEncryptionParallel(plainText);
+		String cipher = returnedCipher[0];
+		long encrypt = Long.parseLong(returnedCipher[1]);
+		System.out.printf("Cipher text : %s\n Time taken to encrypt %d\n", cipher, encrypt);
+
+		/*
+		 * Array containing the plain text and time taken
+		 * [0] => plain text
+		 * [1] => Time taken
+		 */
+		String[] returnedPlain = object.doDecryptionParallel(cipher);
+		String pt = returnedPlain[0];
+		long decrypt = Long.parseLong(returnedPlain[1]);
+		System.out.printf("Decrypted text : %s\n Time taken to decrypt %d\n", pt, decrypt);
+
+		// checking for equality of original text and decrypted text
+		if (pt.equals(plainText)) {
+			System.out.println("Successful Encryption and Decryption");
+		}
 	}
 
 	public String[] doEncryptionParallel(String plainText) {

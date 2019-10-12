@@ -1,5 +1,3 @@
-package IDEAAlgorithm;
-
 class DataClass {
 
 	String getData() {
