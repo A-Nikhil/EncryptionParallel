@@ -28,8 +28,4 @@ class DataClass {
 
 		return data;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(new DataClass().getData().substring(0, 8212));
-	}
 }
